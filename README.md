@@ -45,8 +45,12 @@ uvx --from https://github.com/banli17/mcp-feedback-enhanced.git mcp-feedback-enh
 ## 如果在使用 uvx 命令时遇到网络问题，可以尝试以下步骤来配置 git 代理
 
 ```
+# 临时设置 git 代理（替换为你的代理地址，比如 Clash 通常是 127.0.0.1:7890）
 git config --global http.https://github.com.proxy http://127.0.0.1:7890
 git config --global https.https://github.com.proxy http://127.0.0.1:7890
+
+# 然后重新尝试 uvx 命令
+uvx --from https://github.com/banli17/mcp-feedback-enhanced.git mcp-feedback-enhanced
 ```
 
 ## 如果仍然遇到问题，可以尝试以下步骤来清除 git 全局代理配置并重置 uv 缓存
