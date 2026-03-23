@@ -1,36 +1,46 @@
 # MCP Feedback Enhanced
 
-## 尝试 uvx 命令
+## 简介
+
+Fork 自 [mcp-feedback-enhanced](https://github.com/Minidoracat/mcp-feedback-enhanced)
+
+## 更新项
+
+- fix: 修复 Internal Server Error  [2026-03-23]
+- fix: 修复粘贴图片, 发送时报错问题
+
+## 安装步骤
+
+1. 安装包
 
 ```
 uvx --from https://github.com/banli17/mcp-feedback-enhanced.git mcp-feedback-enhanced
 ```
 
-## uvx 配置示例
+2. 配置 MCP Desktop
 
 ```json
 {
   "servers": {
     "mcp-feedback-enhanced": {
       "command": "uvx",
-      "args": [
-        "--from",
-        "https://github.com/banli17/mcp-feedback-enhanced.git",
-        "mcp-feedback-enhanced@latest",
-      ],
+      "args": ["mcp-feedback-enhanced"],  // 这里不要 @latest
       "timeout": 3600,
       "env": {
         "MCP_DESKTOP_MODE": "true",
         "MCP_WEB_HOST": "127.0.0.1",
-        "MCP_WEB_PORT": "8767",
-        "MCP_DEBUG": "false",
+        "MCP_WEB_PORT": "8765",
+        "MCP_DEBUG": "false"
       },
       "autoApprove": ["interactive_feedback"],
-      "type": "stdio",
+      "type": "stdio"
     }
   }
 }
 ```
+
+3. 重启 MCP Desktop，进入设置界面，找到 "mcp-feedback-enhanced" 服务器，点击 "启动"，等待服务器启动完成后即可使用。
+
 
 ## 如果在使用 uvx 命令时遇到网络问题，可以尝试以下步骤来配置 git 代理
 
