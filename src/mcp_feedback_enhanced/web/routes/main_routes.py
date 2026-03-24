@@ -8,11 +8,12 @@
 
 import json
 import time
+import traceback
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 from fastapi import Request, WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse
 
 from ... import __version__
 from ...debug import web_debug_log as debug_log
@@ -53,6 +54,17 @@ def load_user_layout_settings() -> str:
 def setup_routes(manager: "WebUIManager"):
     """設置路由"""
 
+    # 全局異常處理器 - 捕獲 500 錯誤並記錄詳細信息
+    @manager.app.exception_handler(Exception)
+    async def global_exception_handler(request: Request, exc: Exception):
+        tb = traceback.format_exception(type(exc), exc, exc.__traceback__)
+        error_detail = "".join(tb)
+        debug_log(f"Internal Server Error: {exc}\n{error_detail}")
+        return PlainTextResponse(
+            f"Internal Server Error: {exc}\n\n{error_detail}",
+            status_code=500,
+        )
+
     @manager.app.get("/", response_class=HTMLResponse)
     async def index(request: Request):
         """統一回饋頁面 - 重構後的主頁面"""
@@ -81,6 +93,7 @@ def setup_routes(manager: "WebUIManager"):
             {
                 "project_directory": current_session.project_directory,
                 "summary": current_session.summary,
+                "session_id": current_session.session_id,
                 "title": "Interactive Feedback - 回饋收集",
                 "version": __version__,
                 "has_session": True,
